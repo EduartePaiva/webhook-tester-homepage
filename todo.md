@@ -7,3 +7,4 @@
 [_] - change password,
 [_] - explain how to use the client
 [_] - download the client app
+[_] - add inter font
