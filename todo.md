@@ -1,4 +1,5 @@
 [x] - Install shadcn
+[_] - use the same theme as the portfolio
 [_] - A web interface, where the client can login,
 [_] - get the webhook url,
 [_] - reset the webhook url,
@@ -7,4 +8,4 @@
 [_] - change password,
 [_] - explain how to use the client
 [_] - download the client app
-[_] - add inter font
+[x] - add inter font
