@@ -1,5 +1,5 @@
 [x] - Install shadcn
-[_] - use the same theme as the portfolio
+[x] - use the same theme as the portfolio
 [_] - A web interface, where the client can login,
 [_] - get the webhook url,
 [_] - reset the webhook url,
@@ -9,3 +9,5 @@
 [_] - explain how to use the client
 [_] - download the client app
 [x] - add inter font
+[x] - add react router
+[_] - do the login page
