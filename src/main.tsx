@@ -10,13 +10,15 @@ import {
 } from "react-router-dom";
 import AppLayout from "./components/app-layout.tsx";
 import SIgnIn from "./components/auth/sign-in.tsx";
+import SignUp from "./components/auth/sign-up.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route element={<AppLayout />}>
             <Route path="/" element={<App />}></Route>,
             <Route path="/home" element={<App />}></Route>,
-            <Route path="/login" element={<SIgnIn />}></Route>,
+            <Route path="/sign-in" element={<SIgnIn />}></Route>,
+            <Route path="/sign-up" element={<SignUp />}></Route>
         </Route>,
     ),
 );

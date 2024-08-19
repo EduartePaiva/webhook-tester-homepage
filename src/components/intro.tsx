@@ -1,5 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 export default function Intro() {
     return (
@@ -19,13 +20,15 @@ export default function Intro() {
                     <p>Iterate your applications faster than ever.</p>
                 </div>
                 <div className="flex gap-2 justify-center sm:justify-start flex-wrap">
-                    <Button className="rounded-full font-semibold text-base">
-                        Get Started{" "}
-                        <ChevronRight
-                            size={14}
-                            className="text-gray-500 ml-2"
-                        />
-                    </Button>
+                    <Link to={"/sign-up"}>
+                        <Button className="rounded-full font-semibold text-base">
+                            Get Started{" "}
+                            <ChevronRight
+                                size={14}
+                                className="text-gray-500 ml-2"
+                            />
+                        </Button>
+                    </Link>
                     <Button
                         className="rounded-full font-semibold text-base"
                         variant={"ghost"}
