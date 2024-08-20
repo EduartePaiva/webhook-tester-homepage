@@ -7,7 +7,8 @@
 }
 @supports (font-variation-settings: normal) {
     :root {
-        font-family: "Inter var", sans-serif;
+        font-family: "InterVariable", sans-serif;
+        font-optical-sizing: auto;
     }
 }
 
@@ -73,6 +74,6 @@
         @apply border-border;
     }
     body {
-        @apply bg-background text-foreground;
+        @apply bg-gray-50 text-gray-950;
     }
 }
