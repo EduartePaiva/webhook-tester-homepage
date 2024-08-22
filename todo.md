@@ -10,4 +10,5 @@
 [_] - download the client app
 [x] - add inter font
 [x] - add react router
-[_] - do the login page
+[x] - do the login page
+[_] - define workflow for creating an account
