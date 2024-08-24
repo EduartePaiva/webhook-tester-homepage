@@ -29,7 +29,7 @@ export default function SignUp() {
         console.log(values);
     };
     return (
-        <div className="h-screen flex">
+        <>
             <Link to={"/home"} className="self-start relative">
                 <Button
                     variant={"ghost"}
@@ -111,6 +111,6 @@ export default function SignUp() {
                     </div>
                 </form>
             </Form>
-        </div>
+        </>
     );
 }
