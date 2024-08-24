@@ -12,3 +12,4 @@
 [x] - add react router
 [x] - do the login page
 [_] - define workflow for creating an account
+[_] - create a profile page?
