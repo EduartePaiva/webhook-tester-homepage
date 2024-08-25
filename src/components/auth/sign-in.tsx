@@ -24,8 +24,28 @@ export default function SignIn() {
         },
     });
 
-    const handleLogin = (values: loginUserType) => {
-        console.log(values);
+    const handleLogin = async (values: loginUserType) => {
+        try {
+            // in production the fetch request will be just "/api/auth/login"
+            const response = await fetch(
+                "http://localhost:3000/api/auth/login",
+                {
+                    headers: { "Content-Type": "application/json" },
+                    method: "POST",
+                    body: JSON.stringify({
+                        email: values.email,
+                        password: values.password,
+                    }),
+                    mode: "cors",
+                },
+            );
+            const data = await response.text();
+            console.log(data);
+
+            // console.log(response);
+        } catch (err) {
+            console.error(err);
+        }
     };
     return (
         <>

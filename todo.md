@@ -11,6 +11,6 @@
 [x] - add inter font
 [x] - add react router
 [x] - do the login page
-[_] - update login page with the form component from chadcn
+[x] - update login page with the form component from chadcn
 [_] - define workflow for creating an account
 [_] - create a profile page?

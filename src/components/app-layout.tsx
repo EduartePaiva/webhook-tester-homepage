@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { Outlet } from "react-router-dom";
 
 export default function AppLayout() {
@@ -8,6 +9,7 @@ export default function AppLayout() {
             <div className="sm:container antialiased flex flex-col h-screen">
                 <Outlet />
             </div>
+            <Toaster position="top-left" />
         </>
     );
 }
