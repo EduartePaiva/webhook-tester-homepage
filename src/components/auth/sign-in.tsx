@@ -1,6 +1,6 @@
 import { ChevronLeft, Webhook } from "lucide-react";
 import { Link } from "react-router-dom";
-import { loginUser, type loginUserType } from "@/zod/schemas";
+import { loginUser, loginUserData, type loginUserType } from "@/zod/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -14,8 +14,13 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import Spinner from "../spinner/spinner";
+import toast from "react-hot-toast";
 
 export default function SignIn() {
+    const [isLoggin, setIsLoggin] = useState(false);
+
     const form = useForm<loginUserType>({
         resolver: zodResolver(loginUser),
         defaultValues: {
@@ -25,6 +30,7 @@ export default function SignIn() {
     });
 
     const handleLogin = async (values: loginUserType) => {
+        setIsLoggin(true);
         try {
             // in production the fetch request will be just "/api/auth/login"
             const response = await fetch(
@@ -36,12 +42,15 @@ export default function SignIn() {
                     mode: "cors",
                 },
             );
-            const data = await response.text();
+            const data = loginUserData.parse(await response.json());
             console.log(data);
 
             // console.log(response);
         } catch (err) {
+            toast.error("Invalid email or password");
             console.error(err);
+        } finally {
+            setIsLoggin(false);
         }
     };
     return (
@@ -109,7 +118,15 @@ export default function SignIn() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Login</Button>
+                    <Button type="submit" disabled={isLoggin}>
+                        {isLoggin ? (
+                            <span className="">
+                                <Spinner className="stroke-slate-300" />
+                            </span>
+                        ) : (
+                            <span>Login</span>
+                        )}
+                    </Button>
                     <div className="mt-4 text-center text-[0.8125rem] text-muted-foreground">
                         Don't have an account?{" "}
                         <Link to={"/sign-up"} className="underline">

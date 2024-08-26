@@ -9,7 +9,7 @@ export default function AppLayout() {
             <div className="sm:container antialiased flex flex-col h-screen">
                 <Outlet />
             </div>
-            <Toaster position="top-left" />
+            <Toaster position="top-center" />
         </>
     );
 }
