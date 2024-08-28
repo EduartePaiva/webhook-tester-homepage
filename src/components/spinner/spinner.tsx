@@ -21,7 +21,7 @@ export default function Spinner({
                     cy="12"
                     r="9.5"
                     fill="none"
-                    stroke-width="3"
+                    strokeWidth="3"
                 ></circle>
             </g>
         </svg>

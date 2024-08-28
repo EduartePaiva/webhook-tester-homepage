@@ -1,6 +1,6 @@
 import { ChevronLeft, Webhook } from "lucide-react";
-import { Link } from "react-router-dom";
-import { loginUser, loginUserData, type loginUserType } from "@/zod/schemas";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser, type loginUserType } from "@/zod/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 
 export default function SignIn() {
     const [isLoggin, setIsLoggin] = useState(false);
+    const navigate = useNavigate();
 
     const form = useForm<loginUserType>({
         resolver: zodResolver(loginUser),
@@ -42,12 +43,24 @@ export default function SignIn() {
                     mode: "cors",
                 },
             );
-            const data = loginUserData.parse(await response.json());
-            console.log(data);
-
-            // console.log(response);
+            if (!response.ok) {
+                if (response.status == 401) {
+                    const resText = await response.text();
+                    toast.error(resText);
+                    throw new Error(resText);
+                }
+                if (response.status == 500) {
+                    toast.error("Internal server error");
+                    throw new Error("Internal server error");
+                }
+                toast.error(`${response.status} error`);
+                throw new Error(response.status.toString());
+            }
+            const data = await response.text();
+            window.localStorage.setItem("user_data", data);
+            navigate("/home", { replace: true });
+            toast.success("Logged in");
         } catch (err) {
-            toast.error("Invalid email or password");
             console.error(err);
         } finally {
             setIsLoggin(false);

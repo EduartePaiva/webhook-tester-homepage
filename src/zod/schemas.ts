@@ -67,5 +67,6 @@ export const loginUserData = z.object({
     accessToken: z.string(),
     webhookURL: z.string(),
     userName: z.string(),
+    expirationDate: z.number(),
 });
 export type loginUserDataType = z.infer<typeof loginUserData>;
