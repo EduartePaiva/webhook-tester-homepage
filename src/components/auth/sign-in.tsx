@@ -17,10 +17,13 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import Spinner from "../spinner/spinner";
 import toast from "react-hot-toast";
+import { setupUser } from "@/utils";
+import { useUser } from "@/hooks/use-user-context";
 
 export default function SignIn() {
     const [isLoggin, setIsLoggin] = useState(false);
     const navigate = useNavigate();
+    const { setIsLogged, setUser } = useUser();
 
     const form = useForm<loginUserType>({
         resolver: zodResolver(loginUser),
@@ -46,21 +49,22 @@ export default function SignIn() {
             if (!response.ok) {
                 if (response.status == 401) {
                     const resText = await response.text();
-                    toast.error(resText);
                     throw new Error(resText);
                 }
                 if (response.status == 500) {
-                    toast.error("Internal server error");
                     throw new Error("Internal server error");
                 }
-                toast.error(`${response.status} error`);
-                throw new Error(response.status.toString());
+                throw new Error(`${response.status} error`);
             }
             const data = await response.text();
             window.localStorage.setItem("user_data", data);
+            setupUser(setIsLogged, setUser);
             navigate("/home", { replace: true });
             toast.success("Logged in");
         } catch (err) {
+            if (err instanceof Error) {
+                toast.error(err.message);
+            }
             console.error(err);
         } finally {
             setIsLoggin(false);
