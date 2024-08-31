@@ -2,7 +2,7 @@ import { ChevronRight, Webhook } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import { useUser } from "@/hooks/use-user-context";
-import Profile from "./profile/profile";
+import ProfileMenu from "./profile/profile-menu";
 
 export default function Header() {
     const { isLogged } = useUser();
@@ -17,7 +17,7 @@ export default function Header() {
             </Link>
             {isLogged ? (
                 <div className="flex gap-2 flex-wrap">
-                    <Profile />
+                    <ProfileMenu />
                 </div>
             ) : (
                 <div className="flex gap-2 flex-wrap">

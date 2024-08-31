@@ -14,3 +14,4 @@
 [x] - update login page with the form component from chadcn
 [_] - define workflow for creating an account
 [_] - create a profile page?
+[x] - logout button
