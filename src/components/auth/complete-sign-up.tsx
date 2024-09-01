@@ -1,7 +1,7 @@
 import { ChevronLeft, Webhook } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { emailCreateUser, type EmailCreateUserType } from "@/zod/schemas";
+import { finishCreateUser, type FinishCreateUserType } from "@/zod/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
@@ -15,22 +15,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-export default function SignUp() {
-    const navigate = useNavigate();
-
-    const form = useForm<EmailCreateUserType>({
-        resolver: zodResolver(emailCreateUser),
+export default function CompleteSignUp() {
+    const form = useForm<FinishCreateUserType>({
+        resolver: zodResolver(finishCreateUser),
         defaultValues: {
-            email: "",
+            userName: "",
+            password: "",
         },
     });
 
-    const handleSignUp = (values: EmailCreateUserType) => {
+    const handleSignUp = (values: FinishCreateUserType) => {
         console.log(values);
-        navigate("/confirmation-message", {
-            replace: true,
-            state: { email: values.email },
-        });
     };
     return (
         <>
@@ -55,20 +50,32 @@ export default function SignUp() {
                             Create your account
                         </h1>
                         <p className="text-balance text-muted-foreground text-[0.8125rem]">
-                            Welcome! Please fill in the email to get started.
+                            Welcome! Please fill in the details to get started.
                         </p>
                     </div>
                     <FormField
                         control={form.control}
-                        name="email"
+                        name="userName"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Email address</FormLabel>
+                                <FormLabel>Username</FormLabel>
+                                <FormControl>
+                                    <Input type="text" required {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
                                 <FormControl>
                                     <Input
-                                        type="email"
+                                        type="password"
                                         required
-                                        placeholder="m@example.com"
                                         {...field}
                                     />
                                 </FormControl>
@@ -76,7 +83,7 @@ export default function SignUp() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Continue</Button>
+                    <Button type="submit">Create Account</Button>
                     <div className="mt-4 text-center text-[0.8125rem] text-muted-foreground">
                         Already have an account?{" "}
                         <Link to={"/sign-in"} className="underline">

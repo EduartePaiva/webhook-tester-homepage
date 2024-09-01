@@ -12,6 +12,7 @@
 [x] - add react router
 [x] - do the login page
 [x] - update login page with the form component from chadcn
-[_] - define workflow for creating an account
+[x] - define workflow for creating an account...
+[_] - workflow logic user insert email > confirmation email is sent > user finish registration after confirmation email
 [_] - create a profile page?
 [x] - logout button

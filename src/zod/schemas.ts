@@ -1,11 +1,10 @@
 import { z } from "zod";
 
-export const createUser = z.object({
+export const finishCreateUser = z.object({
     userName: z
         .string()
         .min(3, "user name should be at least 3 characters long")
         .max(20, "user name should be at max 20 characters long"),
-    email: z.string().email("invalid email"),
     password: z.string().superRefine((val, ctx) => {
         if (val.length < 8) {
             ctx.addIssue({
@@ -55,7 +54,12 @@ export const createUser = z.object({
         }
     }),
 });
-export type createUserType = z.infer<typeof createUser>;
+export type FinishCreateUserType = z.infer<typeof finishCreateUser>;
+
+export const emailCreateUser = z.object({
+    email: z.string().email("Invalid email"),
+});
+export type EmailCreateUserType = z.infer<typeof emailCreateUser>;
 
 export const loginUser = z.object({
     email: z.string().email("invalid email"),
