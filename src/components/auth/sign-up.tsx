@@ -14,9 +14,13 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import Spinner from "../spinner/spinner";
+import toast from "react-hot-toast";
 
 export default function SignUp() {
     const navigate = useNavigate();
+    const [isHandlingSignUp, setIsHandlingSignUp] = useState(false);
 
     const form = useForm<EmailCreateUserType>({
         resolver: zodResolver(emailCreateUser),
@@ -25,12 +29,42 @@ export default function SignUp() {
         },
     });
 
-    const handleSignUp = (values: EmailCreateUserType) => {
-        console.log(values);
-        navigate("/confirmation-message", {
-            replace: true,
-            state: { email: values.email },
-        });
+    const handleSignUp = async (values: EmailCreateUserType) => {
+        try {
+            setIsHandlingSignUp(true);
+            const response = await fetch(
+                "http://localhost:3000/api/auth/send-email",
+                {
+                    headers: { "Content-Type": "application/json" },
+                    method: "POST",
+                    body: JSON.stringify(values),
+                    mode: "cors",
+                },
+            );
+            if (!response.ok) {
+                if (response.status == 400) {
+                    throw new Error("Invalid email input");
+                }
+                if (response.status == 403) {
+                    throw new Error("email already in use");
+                }
+                if (response.status == 500) {
+                    throw new Error("Internal server error");
+                }
+                throw new Error(`${response.status} error`);
+            }
+            navigate("/confirmation-message", {
+                replace: true,
+                state: { email: values.email },
+            });
+        } catch (err) {
+            if (err instanceof Error) {
+                toast.error(err.message);
+            }
+            console.error(err);
+        } finally {
+            setIsHandlingSignUp(false);
+        }
     };
     return (
         <>
@@ -69,6 +103,7 @@ export default function SignUp() {
                                         type="email"
                                         required
                                         placeholder="m@example.com"
+                                        disabled={isHandlingSignUp}
                                         {...field}
                                     />
                                 </FormControl>
@@ -76,7 +111,13 @@ export default function SignUp() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Continue</Button>
+                    <Button type="submit" disabled={isHandlingSignUp}>
+                        {isHandlingSignUp ? (
+                            <Spinner className="stroke-slate-300" />
+                        ) : (
+                            "Continue"
+                        )}
+                    </Button>
                     <div className="mt-4 text-center text-[0.8125rem] text-muted-foreground">
                         Already have an account?{" "}
                         <Link to={"/sign-in"} className="underline">
