@@ -13,6 +13,8 @@
 [x] - do the login page
 [x] - update login page with the form component from chadcn
 [x] - define workflow for creating an account...
-[_] - workflow logic user insert email > confirmation email is sent > user finish registration after confirmation email
+[x] - workflow logic user insert email > confirmation email is sent > user finish registration after confirmation email
 [_] - create a profile page?
 [x] - logout button
+[_] - reset password.
+[_] - deploy it to see if works

@@ -45,7 +45,6 @@ export default function CompleteSignUp() {
             if (token === null) {
                 throw new Error("token is missing");
             }
-            // response could return the jwt token for user to login or I could fetch the login part, but actually I don't know the email for the user, so let's do the first option.
             const response = await fetch(
                 "http://localhost:3000/api/auth/create",
                 {
@@ -56,7 +55,9 @@ export default function CompleteSignUp() {
                 },
             );
             if (!response.ok) {
-                throw new Error(`${response.status} error`);
+                // I'm casting here because it's guarantee that the server will return an error of this type
+                const resErr = (await response.json()) as { error: string };
+                throw new Error(resErr.error);
             }
             const data = await response.text();
             window.localStorage.setItem("user_data", data);
