@@ -47,7 +47,7 @@ export default function CompleteSignUp() {
             }
             // response could return the jwt token for user to login or I could fetch the login part, but actually I don't know the email for the user, so let's do the first option.
             const response = await fetch(
-                "http://localhost:3000/api/auth/complete-signup",
+                "http://localhost:3000/api/auth/create",
                 {
                     headers: { "Content-Type": "application/json" },
                     method: "POST",
