@@ -38,7 +38,7 @@ export default function SignIn() {
         try {
             // in production the fetch request will be just "/api/auth/login"
             const response = await fetch(
-                "http://localhost:3000/api/auth/login",
+                `${import.meta.env.VITE_SITE_URL}/api/auth/login`,
                 {
                     headers: { "Content-Type": "application/json" },
                     method: "POST",

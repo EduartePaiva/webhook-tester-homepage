@@ -46,7 +46,7 @@ export default function CompleteSignUp() {
                 throw new Error("token is missing");
             }
             const response = await fetch(
-                "http://localhost:3000/api/auth/create",
+                `${import.meta.env.VITE_SITE_URL}/api/auth/create`,
                 {
                     headers: { "Content-Type": "application/json" },
                     method: "POST",

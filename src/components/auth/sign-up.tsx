@@ -33,7 +33,7 @@ export default function SignUp() {
         try {
             setIsHandlingSignUp(true);
             const response = await fetch(
-                "http://localhost:3000/api/auth/send-email",
+                `${import.meta.env.VITE_SITE_URL}/api/auth/send-email`,
                 {
                     headers: { "Content-Type": "application/json" },
                     method: "POST",
