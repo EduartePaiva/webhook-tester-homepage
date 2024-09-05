@@ -1,4 +1,4 @@
-import { Github, LogOut, Settings, User } from "lucide-react";
+import { LogOut, Settings, Webhook } from "lucide-react";
 import { Link, redirect } from "react-router-dom";
 
 import {
@@ -33,24 +33,21 @@ export default function ProfileMenu() {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem asChild>
-                        <Link to={"/profile"} className="cursor-pointer">
-                            <User className="mr-2 h-4 w-4" />
-                            <span>Profile</span>
+                        <Link to={"/webhook-url"} className="cursor-pointer">
+                            <Webhook className="mr-2 h-4 w-4" />
+                            <span>Webhook URL</span>
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link to={"/settings"} className="cursor-pointer">
+                        <Link
+                            to={"/change-password"}
+                            className="cursor-pointer"
+                        >
                             <Settings className="mr-2 h-4 w-4" />
-                            <span>Settings</span>
+                            <span>Change Password</span>
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
-
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    <Github className="mr-2 h-4 w-4" />
-                    <span>GitHub</span>
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     className="cursor-pointer"
