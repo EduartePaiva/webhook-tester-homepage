@@ -26,12 +26,15 @@ export default function ChangePasswordDialog({
     const [isSendingEmail, setIsSendingEmail] = useState(false);
     const { user } = useUser();
 
-    const handleSendingEmail = async () => {
+    const handleSendingEmail = async (
+        event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    ) => {
+        event.preventDefault();
         try {
             setIsSendingEmail(true);
 
             const response = await fetch(
-                `${import.meta.env.BASE_URL}/api/auth/change-password`,
+                `${import.meta.env.VITE_SITE_URL}/api/auth/change-password`,
                 {
                     method: "GET",
                     headers: { Authorization: `Bearer ${user?.accessToken}` },
