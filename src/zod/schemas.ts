@@ -74,3 +74,7 @@ export const loginUserData = z.object({
     expirationDate: z.number(),
 });
 export type loginUserDataType = z.infer<typeof loginUserData>;
+
+export const parseErrorFromFetch = z.object({
+    error: z.string(),
+});
