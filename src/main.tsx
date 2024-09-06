@@ -13,6 +13,7 @@ import SIgnIn from "./components/auth/sign-in.tsx";
 import SignUp from "./components/auth/sign-up.tsx";
 import ConfirmationMessage from "./components/auth/confirmation-message.tsx";
 import CompleteSignUp from "./components/auth/complete-sign-up.tsx";
+import ResetPasswordPage from "./components/auth/reset-password.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -26,6 +27,10 @@ const router = createBrowserRouter(
                 element={<ConfirmationMessage />}
             ></Route>
             <Route path="/complete-signup" element={<CompleteSignUp />}></Route>
+            <Route
+                path="/reset-password"
+                element={<ResetPasswordPage />}
+            ></Route>
             ,
         </Route>,
     ),
