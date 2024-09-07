@@ -19,3 +19,4 @@
 [_] - reset password.
 [_] - change password, change password plan: generate a jwt token with the userId and, save this token on the database and send this token to the user, it could be cool if this token delete itself from the database, I have to search how to do one time token.
 [x] - frontend change password logic done, now the backend is needed
+[_] - reset-password page needs to receive the token from url params and then send the token with the new password to the server.

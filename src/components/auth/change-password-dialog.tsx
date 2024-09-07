@@ -12,7 +12,7 @@ import { useState } from "react";
 import Spinner from "../spinner/spinner";
 import toast from "react-hot-toast";
 import { useUser } from "@/hooks/use-user-context";
-import { parseErrorFromFetch } from "@/zod/schemas";
+import { handleErrorResponse } from "@/utils";
 
 type ChangePasswordDialogProps = {
     open: boolean;
@@ -36,22 +36,17 @@ export default function ChangePasswordDialog({
             const response = await fetch(
                 `${import.meta.env.VITE_SITE_URL}/api/auth/change-password`,
                 {
-                    method: "GET",
+                    method: "POST",
                     headers: { Authorization: `Bearer ${user?.accessToken}` },
                 },
             );
 
             if (!response.ok) {
-                const errorResp = parseErrorFromFetch.safeParse(
-                    await response.json(),
-                );
-                if (!errorResp.success) {
-                    console.error(errorResp.error);
-                    throw new Error(
-                        `Some unknown error, status: ${response.status}`,
-                    );
+                const errorMsg = await handleErrorResponse(response);
+                if (errorMsg.hasError) {
+                    throw new Error(errorMsg.message);
                 }
-                throw new Error(errorResp.data.error);
+                throw new Error(`${response.status} error`);
             }
             toast.success(
                 "A change password link has been sent! Check out your email.",

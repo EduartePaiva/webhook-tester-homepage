@@ -11,7 +11,7 @@ import { ChevronLeft, Webhook } from "lucide-react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { resetPassword, ResetPasswordType } from "@/zod/schemas";
+import { emailCreateUser, EmailCreateUserType } from "@/zod/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
     Form,
@@ -21,24 +21,52 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import { useState } from "react";
+import { handleErrorResponse } from "@/utils";
+import Spinner from "../spinner/spinner";
 
-export default function ResetPasswordPage() {
-    const form = useForm<ResetPasswordType>({
-        resolver: zodResolver(resetPassword),
+export default function ForgotPasswordPage() {
+    const [isSendingEmail, setIsSendingEmail] = useState(false);
+
+    const form = useForm<EmailCreateUserType>({
+        resolver: zodResolver(emailCreateUser),
         defaultValues: {
-            password: "",
-            confirmPassword: "",
+            email: "",
         },
     });
 
-    const handleResetPWSubmit = ({ password }: ResetPasswordType) => {
-        // Here you would typically call an API to reset the password
-        // For this example, we'll just simulate a successful reset
-        toast.success("Password reset successfully!", {
-            duration: 3000,
-            position: "top-center",
-            icon: "🔒",
-        });
+    const handleResetPWSubmit = async (values: EmailCreateUserType) => {
+        try {
+            setIsSendingEmail(true);
+            const response = await fetch(
+                `${import.meta.env.VITE_SITE_URL}/api/auth/change-password`,
+                {
+                    headers: { "Content-Type": "application/json" },
+                    method: "POST",
+                    body: JSON.stringify(values),
+                    mode: "cors",
+                },
+            );
+            if (!response.ok) {
+                const errorMsg = await handleErrorResponse(response);
+                if (errorMsg.hasError) {
+                    throw new Error(errorMsg.message);
+                }
+                throw new Error(`${response.status} error`);
+            }
+            toast.success(`A reset link was sent to ${values.email}`, {
+                duration: 3000,
+                position: "top-center",
+                icon: "🔒",
+            });
+        } catch (err) {
+            if (err instanceof Error) {
+                toast.error(err.message);
+            }
+            console.error(err);
+        } finally {
+            setIsSendingEmail(false);
+        }
     };
 
     return (
@@ -55,10 +83,11 @@ export default function ResetPasswordPage() {
                 <CardHeader className="flex flex-col text-center items-center text-gray-700 p-0 mb-4">
                     <Webhook size={28} />
                     <CardTitle className="text-lg font-bold mt-0 p-0">
-                        Reset Password
+                        Forgot Password
                     </CardTitle>
                     <CardDescription className="mt-0 text-balance text-muted-foreground text-[0.8125rem]">
-                        Enter your new password below.
+                        Enter your email to receive a link in the mailbox for
+                        resetting the password.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="p-0">
@@ -69,14 +98,15 @@ export default function ResetPasswordPage() {
                         >
                             <FormField
                                 control={form.control}
-                                name="password"
+                                name="email"
                                 render={({ field }) => (
                                     <FormItem className="relative">
-                                        <FormLabel>Password</FormLabel>
+                                        <FormLabel>Email</FormLabel>
                                         <FormControl>
                                             <Input
-                                                type="password"
+                                                type="email"
                                                 required
+                                                disabled={isSendingEmail}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -84,25 +114,16 @@ export default function ResetPasswordPage() {
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="confirmPassword"
-                                render={({ field }) => (
-                                    <FormItem className="relative">
-                                        <FormLabel>Confirm Password</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="password"
-                                                required
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
+                            <Button
+                                disabled={isSendingEmail}
+                                type="submit"
+                                className="w-full mt-4"
+                            >
+                                {isSendingEmail ? (
+                                    <Spinner className="stroke-slate-300" />
+                                ) : (
+                                    "Reset Password"
                                 )}
-                            />
-                            <Button type="submit" className="w-full mt-4">
-                                Reset Password
                             </Button>
                         </form>
                     </Form>
