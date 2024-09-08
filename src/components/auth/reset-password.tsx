@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { ChevronLeft, Webhook } from "lucide-react";
+import { ChevronLeft, Eye, EyeOff, Webhook } from "lucide-react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -34,9 +34,18 @@ export default function ResetPasswordPage() {
             confirmPassword: "",
         },
     });
-    const [isResettingPw, setIsResettingPw] = useState(true);
+    const [isResettingPw, setIsResettingPw] = useState(false);
     const { setIsLogged, setUser } = useUser();
     const navigate = useNavigate();
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    function toggleShowPassword() {
+        setShowPassword((prev) => (prev ? false : true));
+    }
+    function toggleShowConfirmPassword() {
+        setShowConfirmPassword((prev) => (prev ? false : true));
+    }
 
     const handleResetPWSubmit = async ({ password }: ResetPasswordType) => {
         // Here you would typically call an API to reset the password
@@ -71,12 +80,13 @@ export default function ResetPasswordPage() {
             window.localStorage.removeItem("user_data");
             window.localStorage.setItem("user_data", data);
             setupUser(setIsLogged, setUser);
-            navigate("/home", { replace: true });
             toast.success("Password reset successfully!", {
                 duration: 3000,
                 position: "top-center",
                 icon: "🔒",
             });
+            navigate("/home", { replace: true });
+            window.location.reload();
         } catch (err) {
             if (err instanceof Error) {
                 toast.error(err.message);
@@ -119,12 +129,34 @@ export default function ResetPasswordPage() {
                                     <FormItem className="relative">
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                disabled={isResettingPw}
-                                                type="password"
-                                                required
-                                                {...field}
-                                            />
+                                            <div className="relative w-full">
+                                                <Input
+                                                    disabled={isResettingPw}
+                                                    type={
+                                                        showPassword
+                                                            ? "text"
+                                                            : "password"
+                                                    }
+                                                    required
+                                                    {...field}
+                                                />
+                                                <div className="absolute top-1/2 -translate-y-1/2 right-0">
+                                                    <Button
+                                                        type="button"
+                                                        variant={"ghost"}
+                                                        size={"icon"}
+                                                        onClick={
+                                                            toggleShowPassword
+                                                        }
+                                                    >
+                                                        {showPassword ? (
+                                                            <Eye size={20} />
+                                                        ) : (
+                                                            <EyeOff size={20} />
+                                                        )}
+                                                    </Button>
+                                                </div>
+                                            </div>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -137,18 +169,44 @@ export default function ResetPasswordPage() {
                                     <FormItem className="relative">
                                         <FormLabel>Confirm Password</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                type="password"
-                                                disabled={isResettingPw}
-                                                required
-                                                {...field}
-                                            />
+                                            <div className="relative w-full">
+                                                <Input
+                                                    type={
+                                                        showConfirmPassword
+                                                            ? "text"
+                                                            : "password"
+                                                    }
+                                                    disabled={isResettingPw}
+                                                    required
+                                                    {...field}
+                                                />
+                                                <div className="absolute top-1/2 -translate-y-1/2 right-0">
+                                                    <Button
+                                                        type="button"
+                                                        variant={"ghost"}
+                                                        size={"icon"}
+                                                        onClick={
+                                                            toggleShowConfirmPassword
+                                                        }
+                                                    >
+                                                        {showConfirmPassword ? (
+                                                            <Eye size={20} />
+                                                        ) : (
+                                                            <EyeOff size={20} />
+                                                        )}
+                                                    </Button>
+                                                </div>
+                                            </div>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full mt-4">
+                            <Button
+                                type="submit"
+                                className="w-full mt-4"
+                                disabled={isResettingPw}
+                            >
                                 {isResettingPw ? (
                                     <Spinner className="stroke-slate-300" />
                                 ) : (

@@ -1,4 +1,4 @@
-import { ChevronLeft, Webhook } from "lucide-react";
+import { ChevronLeft, Eye, EyeOff, Webhook } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser, type loginUserType } from "@/zod/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +24,11 @@ export default function SignIn() {
     const [isLoggin, setIsLoggin] = useState(false);
     const navigate = useNavigate();
     const { setIsLogged, setUser } = useUser();
+    const [showPassword, setShowPassword] = useState(false);
+
+    function toggleShowPassword() {
+        setShowPassword((prev) => (prev ? false : true));
+    }
 
     const form = useForm<loginUserType>({
         resolver: zodResolver(loginUser),
@@ -125,11 +130,31 @@ export default function SignIn() {
                                     Forgot your password?
                                 </Link>
                                 <FormControl>
-                                    <Input
-                                        type="password"
-                                        required
-                                        {...field}
-                                    />
+                                    <div className="relative w-full">
+                                        <Input
+                                            type={
+                                                showPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            required
+                                            {...field}
+                                        />
+                                        <div className="absolute top-1/2 -translate-y-1/2 right-0">
+                                            <Button
+                                                type="button"
+                                                variant={"ghost"}
+                                                size={"icon"}
+                                                onClick={toggleShowPassword}
+                                            >
+                                                {showPassword ? (
+                                                    <Eye size={20} />
+                                                ) : (
+                                                    <EyeOff size={20} />
+                                                )}
+                                            </Button>
+                                        </div>
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

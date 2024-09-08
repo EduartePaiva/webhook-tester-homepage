@@ -1,4 +1,4 @@
-import { ChevronLeft, Webhook } from "lucide-react";
+import { ChevronLeft, Eye, EyeOff, Webhook } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { finishCreateUser, type FinishCreateUserType } from "@/zod/schemas";
@@ -24,6 +24,11 @@ export default function CompleteSignUp() {
     const [isHandlingSignUp, setIsHandlingSignUp] = useState(false);
     const { setIsLogged, setUser } = useUser();
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+
+    function toggleShowPassword() {
+        setShowPassword((prev) => (prev ? false : true));
+    }
 
     const form = useForm<FinishCreateUserType>({
         resolver: zodResolver(finishCreateUser),
@@ -123,12 +128,31 @@ export default function CompleteSignUp() {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        disabled={isHandlingSignUp}
-                                        type="password"
-                                        required
-                                        {...field}
-                                    />
+                                    <div className="relative w-full">
+                                        <Input
+                                            type={
+                                                showPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            required
+                                            {...field}
+                                        />
+                                        <div className="absolute top-1/2 -translate-y-1/2 right-0">
+                                            <Button
+                                                type="button"
+                                                variant={"ghost"}
+                                                size={"icon"}
+                                                onClick={toggleShowPassword}
+                                            >
+                                                {showPassword ? (
+                                                    <Eye size={20} />
+                                                ) : (
+                                                    <EyeOff size={20} />
+                                                )}
+                                            </Button>
+                                        </div>
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -141,12 +165,6 @@ export default function CompleteSignUp() {
                             "Create Account"
                         )}
                     </Button>
-                    <div className="mt-4 text-center text-[0.8125rem] text-muted-foreground">
-                        Already have an account?{" "}
-                        <Link to={"/sign-in"} className="underline">
-                            Sign in
-                        </Link>
-                    </div>
                 </form>
             </Form>
         </>

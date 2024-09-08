@@ -77,3 +77,8 @@
         @apply bg-gray-50 text-gray-950;
     }
 }
+
+/* disable anoying eye in microsoft edge */
+input::-ms-reveal {
+    display: none;
+}

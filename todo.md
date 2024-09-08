@@ -21,3 +21,4 @@
 [x] - frontend change password logic done, now the backend is needed
 [_] - reset-password page needs to receive the token from url params and then send the token with the new password to the server.
 [_] test and deploy everything related to reset password
+[_] - make the eye to show password
