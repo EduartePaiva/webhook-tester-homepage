@@ -27,6 +27,7 @@ import Spinner from "../spinner/spinner";
 
 export default function ForgotPasswordPage() {
     const [isSendingEmail, setIsSendingEmail] = useState(false);
+    const [disableBtn, setDisableBtn] = useState(false);
 
     const form = useForm<EmailCreateUserType>({
         resolver: zodResolver(emailCreateUser),
@@ -66,6 +67,7 @@ export default function ForgotPasswordPage() {
             console.error(err);
         } finally {
             setIsSendingEmail(false);
+            setDisableBtn(true);
         }
     };
 
@@ -106,7 +108,9 @@ export default function ForgotPasswordPage() {
                                             <Input
                                                 type="email"
                                                 required
-                                                disabled={isSendingEmail}
+                                                disabled={
+                                                    isSendingEmail || disableBtn
+                                                }
                                                 {...field}
                                             />
                                         </FormControl>
@@ -115,7 +119,7 @@ export default function ForgotPasswordPage() {
                                 )}
                             />
                             <Button
-                                disabled={isSendingEmail}
+                                disabled={isSendingEmail || disableBtn}
                                 type="submit"
                                 className="w-full mt-4"
                             >
