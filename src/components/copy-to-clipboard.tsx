@@ -16,7 +16,7 @@ export default function CopyToClipBoard({ text }: { text: string }) {
         setTimeout(() => setCopied(false), 2000);
     };
     return (
-        <div className="flex items-center gap-2 max-w-[650px]">
+        <div className="max-w-[650px] inline-block">
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger asChild>

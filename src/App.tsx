@@ -1,11 +1,15 @@
 import Header from "@/components/header";
 import Intro from "@/components/intro";
+import About from "./components/about";
+import HowToUse from "./components/how-to-use";
 
 function App() {
     return (
         <>
             <Header />
             <Intro />
+            <About />
+            <HowToUse />
         </>
     );
 }
