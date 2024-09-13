@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import CopyToClipBoard from "./copy-to-clipboard";
 import CoolLink from "./cool-link";
+import { useUser } from "@/hooks/use-user-context";
 
 type Step = {
     title: string;
@@ -21,64 +22,83 @@ type Step = {
     }[];
 };
 
-const steps: Step[] = [
-    {
-        title: "Account",
-        body: [
-            {
-                description:
-                    "First it's necessary to have an account. Create an account on the link below",
-                code: `${import.meta.env.VITE_SITE_URL}/sign-up`,
-                isLink: true,
-            },
-        ],
-    },
-    {
-        title: "Installation",
-        body: [
-            {
-                description:
-                    "Then clone and install the client app from the link below, follow the instructions of the github repository.",
-                code: "https://github.com/EduartePaiva/webhook-tester-client",
-                isLink: true,
-            },
-            {
-                description:
-                    "For the client app to work properly it's recommended to have bun installed. Check Bun official website",
-                code: "https://bun.sh",
-                isLink: true,
-            },
-        ],
-    },
-    {
-        title: "Usage",
-        body: [
-            {
-                description: "Use the component in your JSX.",
-                code: "<YourComponent prop1='value1' prop2='value2' />",
-            },
-        ],
-    },
-    {
-        title: "Customization",
-        body: [
-            {
-                description: "Customize the component using props or CSS.",
-                code: "// Example of customization\n<YourComponent\n  theme='dark'\n  fontSize={16}\n/>",
-            },
-        ],
-    },
-];
+const accountStep: Step = {
+    title: "Account",
+    body: [
+        {
+            description:
+                "First it's necessary to have an account. Create an account on the link below and then come back to this page.",
+            code: `${import.meta.env.VITE_CURRENT_LOCALHOST}/sign-up`,
+            isLink: true,
+        },
+    ],
+};
+const installationStep: Step = {
+    title: "Installation",
+    body: [
+        {
+            description:
+                "Clone and install the client app from the link below, follow the instructions of the github repository.",
+            code: "https://github.com/EduartePaiva/webhook-tester-client",
+            isLink: true,
+        },
+        {
+            description:
+                "For the client app to work properly it's recommended to have Bun installed. Check Bun official website",
+            code: "https://bun.sh",
+            isLink: true,
+        },
+    ],
+};
+const loginStep: Step = {
+    title: "Login",
+    body: [
+        {
+            description:
+                "Now you need to Login into your account then come back to step 1 to proceed.",
+            code: `${import.meta.env.VITE_CURRENT_LOCALHOST}/sign-in`,
+            isLink: true,
+        },
+    ],
+};
 
 export default function HowToUse() {
+    const { isLogged, user } = useUser();
     const [currentStep, setCurrentStep] = useState(0);
 
     const nextStep = () =>
         setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
     const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
 
+    const usageStep: Step = {
+        title: "Usage",
+        body: [
+            {
+                description:
+                    "Start your client app that you have installed, it'll ask a the email, password and the localhost url of your backend that will receive the webhook, for example (http://loaclhost:3000) ",
+            },
+            {
+                description:
+                    "Next copy you webhook URL below and paste it in your application.",
+                code: user?.webhookURL ?? "you need to login to see this data",
+            },
+            {
+                description:
+                    "If everything is working whenever a POST request is made to this URL above the app client will receive this post and redirect it automatically to your local backend.",
+            },
+        ],
+    };
+
+    const handleUsage = (): Step[] => {
+        if (!isLogged) {
+            return [accountStep, loginStep, installationStep];
+        }
+        return [installationStep, usageStep];
+    };
+    const steps = handleUsage();
+
     return (
-        <Card className="w-full max-w-3xl mx-auto mt-8 bg-gray-100 border-none shadow-none">
+        <Card className="w-full max-w-3xl mx-auto mt-8 bg-white/40 border-none shadow-none">
             <CardHeader>
                 <CardTitle className="text-2xl font-bold capitalize">
                     how to use webhook tester
@@ -92,12 +112,12 @@ export default function HowToUse() {
                     value={currentStep.toString()}
                     onValueChange={(value) => setCurrentStep(parseInt(value))}
                 >
-                    <TabsList className="grid w-full grid-cols-4 mb-6">
+                    <TabsList className={"flex w-full  mb-6"}>
                         {steps.map((_, index) => (
                             <TabsTrigger
                                 key={index}
                                 value={index.toString()}
-                                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                                className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                             >
                                 Step {index + 1}
                             </TabsTrigger>

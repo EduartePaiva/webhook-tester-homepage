@@ -33,7 +33,7 @@ export default function Intro() {
                             </Button>
                         </Link>
                     )}
-                    <Button
+                    {/* <Button
                         className="rounded-full font-semibold text-base"
                         variant={isLogged ? "default" : "ghost"}
                     >
@@ -42,7 +42,7 @@ export default function Intro() {
                             size={14}
                             className="text-gray-500 ml-2"
                         />
-                    </Button>
+                    </Button> */}
                 </div>
             </div>
         </section>
