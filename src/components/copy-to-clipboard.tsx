@@ -23,7 +23,7 @@ export default function CopyToClipBoard({ text }: { text: string }) {
                         <Button
                             type="button"
                             onClick={handleCopy}
-                            className="transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring pointer-events-auto flex-1 items-center gap-1 overflow-hidden text-ellipsis rounded-lg border border-black/10 bg-white px-3 py-1.5 font-light text-gray-500 shadow-none hover:bg-gray-100 disabled:opacity-100"
+                            className="focus-visible:ring-1 max-w-[460px] md:max-w-none sm:max-w-[530px] pointer-events-auto gap-1 overflow-hidden text-ellipsis rounded-lg border border-black/10 bg-white px-3 py-1.5 font-light text-gray-500 shadow-none hover:bg-gray-100 disabled:opacity-100"
                         >
                             <div className="line-clamp-1 flex flex-1 items-center gap-2 font-mono text-[13px]">
                                 <span className="inline-block truncate">

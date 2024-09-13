@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import {
     Card,
     CardContent,
@@ -10,33 +10,63 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import CopyToClipBoard from "./copy-to-clipboard";
+import CoolLink from "./cool-link";
 
 type Step = {
     title: string;
-    description: string;
-    code?: string;
+    body: {
+        description: string;
+        code?: string;
+        isLink?: true;
+    }[];
 };
 
 const steps: Step[] = [
     {
-        title: "Installation",
-        description: "First, install the package using npm or yarn.",
-        code: "npm install your-package-name",
+        title: "Account",
+        body: [
+            {
+                description:
+                    "First it's necessary to have an account. Create an account on the link below",
+                code: `${import.meta.env.VITE_SITE_URL}/sign-up`,
+                isLink: true,
+            },
+        ],
     },
     {
-        title: "Import",
-        description: "Import the component in your React file.",
-        code: "import { YourComponent } from 'your-package-name'",
+        title: "Installation",
+        body: [
+            {
+                description:
+                    "Then clone and install the client app from the link below, follow the instructions of the github repository.",
+                code: "https://github.com/EduartePaiva/webhook-tester-client",
+                isLink: true,
+            },
+            {
+                description:
+                    "For the client app to work properly it's recommended to have bun installed. Check Bun official website",
+                code: "https://bun.sh",
+                isLink: true,
+            },
+        ],
     },
     {
         title: "Usage",
-        description: "Use the component in your JSX.",
-        code: "<YourComponent prop1='value1' prop2='value2' />",
+        body: [
+            {
+                description: "Use the component in your JSX.",
+                code: "<YourComponent prop1='value1' prop2='value2' />",
+            },
+        ],
     },
     {
         title: "Customization",
-        description: "Customize the component using props or CSS.",
-        code: "// Example of customization\n<YourComponent\n  theme='dark'\n  fontSize={16}\n/>",
+        body: [
+            {
+                description: "Customize the component using props or CSS.",
+                code: "// Example of customization\n<YourComponent\n  theme='dark'\n  fontSize={16}\n/>",
+            },
+        ],
     },
 ];
 
@@ -48,14 +78,13 @@ export default function HowToUse() {
     const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
 
     return (
-        <Card className="w-full max-w-3xl mx-auto">
+        <Card className="w-full max-w-3xl mx-auto mt-8 bg-gray-100 border-none shadow-none">
             <CardHeader>
-                <CardTitle className="text-2xl font-bold">
-                    How to Use Our Component
+                <CardTitle className="text-2xl font-bold capitalize">
+                    how to use webhook tester
                 </CardTitle>
                 <CardDescription>
-                    Follow these steps to integrate our component into your
-                    project
+                    Follow these steps to get up and running
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -64,7 +93,7 @@ export default function HowToUse() {
                     onValueChange={(value) => setCurrentStep(parseInt(value))}
                 >
                     <TabsList className="grid w-full grid-cols-4 mb-6">
-                        {steps.map((step, index) => (
+                        {steps.map((_, index) => (
                             <TabsTrigger
                                 key={index}
                                 value={index.toString()}
@@ -83,14 +112,24 @@ export default function HowToUse() {
                             <h3 className="text-lg font-semibold mb-2">
                                 {step.title}
                             </h3>
-                            <p className="text-gray-600 mb-4">
-                                {step.description}
-                            </p>
-                            {step.code && (
-                                <div className="mb-4">
-                                    <CopyToClipBoard text={step.code} />
-                                </div>
-                            )}
+                            {step.body.map((content, index) => (
+                                <Fragment key={index}>
+                                    <p className="text-gray-600 mb-4 max-w-[45ch] text-balance">
+                                        {content.description}
+                                    </p>
+                                    {content.code && (
+                                        <div className="mb-4">
+                                            {content.isLink ? (
+                                                <CoolLink text={content.code} />
+                                            ) : (
+                                                <CopyToClipBoard
+                                                    text={content.code}
+                                                />
+                                            )}
+                                        </div>
+                                    )}
+                                </Fragment>
+                            ))}
                             <div className="flex justify-between mt-6">
                                 <Button
                                     onClick={prevStep}
