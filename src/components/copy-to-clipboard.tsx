@@ -7,8 +7,15 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
-export default function CopyToClipBoard({ text }: { text: string }) {
+export default function CopyToClipBoard({
+    text,
+    className,
+}: {
+    text: string;
+    className?: string;
+}) {
     const [copied, setCopied] = useState(false);
     const handleCopy = () => {
         navigator.clipboard.writeText(text);
@@ -16,7 +23,7 @@ export default function CopyToClipBoard({ text }: { text: string }) {
         setTimeout(() => setCopied(false), 2000);
     };
     return (
-        <div className="max-w-[650px] inline-block">
+        <div className={cn("max-w-[650px] inline-block", className)}>
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger asChild>

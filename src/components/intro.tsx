@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Github } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import { useUser } from "@/hooks/use-user-context";
@@ -33,16 +33,18 @@ export default function Intro() {
                             </Button>
                         </Link>
                     )}
-                    {/* <Button
-                        className="rounded-full font-semibold text-base"
-                        variant={isLogged ? "default" : "ghost"}
+                    <a
+                        href="https://github.com/EduartePaiva/webhook-tester"
+                        target="_blank"
                     >
-                        Documentation{" "}
-                        <ChevronRight
-                            size={14}
-                            className="text-gray-500 ml-2"
-                        />
-                    </Button> */}
+                        <Button
+                            className="rounded-full font-semibold text-base"
+                            variant={isLogged ? "default" : "ghost"}
+                        >
+                            Documentation{" "}
+                            <Github className="ml-2" size={20}></Github>
+                        </Button>
+                    </a>
                 </div>
             </div>
         </section>

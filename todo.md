@@ -12,9 +12,9 @@
 [x] - workflow logic user insert email > confirmation email is sent > user finish registration after confirmation email
 [x] - create a profile page?
 [x] - logout button
-[_] - get the webhook url,
+[x] - get the webhook url,
 [_] - reset the webhook url,
-[_] - explain how to use the client
+[x] - explain how to use the client
 [_] - download the client app
 [x] - reset password.
 [x] - change password, change password plan: generate a jwt token with the userId and, save this token on the database and send this token to the user, it could be cool if this token delete itself from the database, I have to search how to do one time token.
